@@ -64,7 +64,7 @@ def main():
         
         # Generate the HTML for each result
         ours_html = create_html(prompt, "ours")
-        depthc_html = create_html(prompt, "depth_c")
+        depthc_html = create_html(prompt, "depth_crafter")
         
         # Write index.html into each subfolder
         with open(os.path.join(ours_folder, "index.html"), "w", encoding="utf-8") as f:
