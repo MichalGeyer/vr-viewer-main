@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Viewer</title>
+  <style>
+    /* Basic reset or box-sizing if desired */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Center everything on the page */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    /* Heading styling */
+    h1 {
+      margin: 20px 0;
+    }
+
+    /* Thumbnails container */
+    .thumbnails {
+      display: flex;
+      flex-wrap: wrap;  /* allow wrapping if many folders */
+      gap: 20px;        /* space between each thumbnail */
+      max-width: 1200px;
+      justify-content: center;
+    }
+
+    /* Individual thumbnail link */
+    .thumbnail {
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      transition: box-shadow 0.3s ease;
+      width: 180px;
+    }
+
+    .thumbnail:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    /* Image styling */
+    .thumbnail img {
+      width: 150px;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    /* Caption styling */
+    .thumbnail p {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>3D Viewer</h1>
+  <div class="thumbnails">
+    <a class="thumbnail" href="viewers/A_busy_mall_escalator_with_shoppers_going_up_and_down._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_busy_mall_escalator_with_shoppers_going_up_and_down. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_busy_mall_escalator_with_shoppers_going_up_and_down._ours/index.html">
+      <img src="images/placeholder.png" alt="A_busy_mall_escalator_with_shoppers_going_up_and_down. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_contemplative_moment_as_a_woman_gazes_out_at_a_modern_urban_skyline_through_a_tall_glass_window._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_contemplative_moment_as_a_woman_gazes_out_at_a_modern_urban_skyline_through_a_tall_glass_window. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_contemplative_moment_as_a_woman_gazes_out_at_a_modern_urban_skyline_through_a_tall_glass_window._ours/index.html">
+      <img src="images/placeholder.png" alt="A_contemplative_moment_as_a_woman_gazes_out_at_a_modern_urban_skyline_through_a_tall_glass_window. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_couple_enjoying_a_moment_together_near_a_window_with_warm_lighting._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_couple_enjoying_a_moment_together_near_a_window_with_warm_lighting. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_couple_enjoying_a_moment_together_near_a_window_with_warm_lighting._ours/index.html">
+      <img src="images/placeholder.png" alt="A_couple_enjoying_a_moment_together_near_a_window_with_warm_lighting. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_delicate_goldfish_in_a_plastic_bag,_symbolizing_a_moment_of_transition_and_care._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_delicate_goldfish_in_a_plastic_bag,_symbolizing_a_moment_of_transition_and_care. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_delicate_goldfish_in_a_plastic_bag,_symbolizing_a_moment_of_transition_and_care._ours/index.html">
+      <img src="images/placeholder.png" alt="A_delicate_goldfish_in_a_plastic_bag,_symbolizing_a_moment_of_transition_and_care. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_mall_interior_featuring_escalators_and_a_sale_advertisement._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_mall_interior_featuring_escalators_and_a_sale_advertisement. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_mall_interior_featuring_escalators_and_a_sale_advertisement._ours/index.html">
+      <img src="images/placeholder.png" alt="A_mall_interior_featuring_escalators_and_a_sale_advertisement. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_minimalist_dining_area_with_modern_furniture_and_decor._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_minimalist_dining_area_with_modern_furniture_and_decor. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_minimalist_dining_area_with_modern_furniture_and_decor._ours/index.html">
+      <img src="images/placeholder.png" alt="A_minimalist_dining_area_with_modern_furniture_and_decor. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_modern_glass_building_with_reflections_and_warm_lighting._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_modern_glass_building_with_reflections_and_warm_lighting. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_modern_glass_building_with_reflections_and_warm_lighting._ours/index.html">
+      <img src="images/placeholder.png" alt="A_modern_glass_building_with_reflections_and_warm_lighting. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_person_in_white_clothing_is_seen_through_a_window._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_person_in_white_clothing_is_seen_through_a_window. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_person_in_white_clothing_is_seen_through_a_window._ours/index.html">
+      <img src="images/placeholder.png" alt="A_person_in_white_clothing_is_seen_through_a_window. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_person_sits_at_a_desk._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_person_sits_at_a_desk. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_person_sits_at_a_desk._ours/index.html">
+      <img src="images/placeholder.png" alt="A_person_sits_at_a_desk. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_reflection_of_a_woman_on_a_building's_glass_window_with_a_car_parked_nearby._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_reflection_of_a_woman_on_a_building's_glass_window_with_a_car_parked_nearby. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_reflection_of_a_woman_on_a_building's_glass_window_with_a_car_parked_nearby._ours/index.html">
+      <img src="images/placeholder.png" alt="A_reflection_of_a_woman_on_a_building's_glass_window_with_a_car_parked_nearby. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_reflective_moment_as_a_woman_sits_by_the_window,_listening_to_music_while_gazing_at_the_cityscape_at_dusk._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_reflective_moment_as_a_woman_sits_by_the_window,_listening_to_music_while_gazing_at_the_cityscape_at_dusk. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_reflective_moment_as_a_woman_sits_by_the_window,_listening_to_music_while_gazing_at_the_cityscape_at_dusk._ours/index.html">
+      <img src="images/placeholder.png" alt="A_reflective_moment_as_a_woman_sits_by_the_window,_listening_to_music_while_gazing_at_the_cityscape_at_dusk. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor.,_cute_depthc/index.html">
+      <img src="images/placeholder.png" alt="A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor.,_cute depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor.,_cute_ours/index.html">
+      <img src="images/placeholder.png" alt="A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor.,_cute ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor._ours/index.html">
+      <img src="images/placeholder.png" alt="A_small_playful_dog_interacting_with_a_ball_on_a_polished_floor. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_stylishly_dressed_woman_reflected_in_a_shop_window_on_a_sunny_day._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_stylishly_dressed_woman_reflected_in_a_shop_window_on_a_sunny_day. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_stylishly_dressed_woman_reflected_in_a_shop_window_on_a_sunny_day._ours/index.html">
+      <img src="images/placeholder.png" alt="A_stylishly_dressed_woman_reflected_in_a_shop_window_on_a_sunny_day. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_surreal_view_as_a_person_wearing_a_reflective_dome_helmet_gazes_out_toward_the_ocean,_merging_reality_with_imagination._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_surreal_view_as_a_person_wearing_a_reflective_dome_helmet_gazes_out_toward_the_ocean,_merging_reality_with_imagination. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_surreal_view_as_a_person_wearing_a_reflective_dome_helmet_gazes_out_toward_the_ocean,_merging_reality_with_imagination._ours/index.html">
+      <img src="images/placeholder.png" alt="A_surreal_view_as_a_person_wearing_a_reflective_dome_helmet_gazes_out_toward_the_ocean,_merging_reality_with_imagination. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_tall,_modern_twin_skyscraper_with_reflective_blue_glass._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_tall,_modern_twin_skyscraper_with_reflective_blue_glass. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_tall,_modern_twin_skyscraper_with_reflective_blue_glass._ours/index.html">
+      <img src="images/placeholder.png" alt="A_tall,_modern_twin_skyscraper_with_reflective_blue_glass. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_warm,_nostalgic_scene_as_a_woman_gazes_out_of_a_window,_illuminated_by_the_soft_glow_of_a_lamp_inside._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_warm,_nostalgic_scene_as_a_woman_gazes_out_of_a_window,_illuminated_by_the_soft_glow_of_a_lamp_inside. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_warm,_nostalgic_scene_as_a_woman_gazes_out_of_a_window,_illuminated_by_the_soft_glow_of_a_lamp_inside._ours/index.html">
+      <img src="images/placeholder.png" alt="A_warm,_nostalgic_scene_as_a_woman_gazes_out_of_a_window,_illuminated_by_the_soft_glow_of_a_lamp_inside. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_in_a_grocery_store_looking_into_a_freezer_section_with_a_shopping_cart._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_woman_in_a_grocery_store_looking_into_a_freezer_section_with_a_shopping_cart. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_in_a_grocery_store_looking_into_a_freezer_section_with_a_shopping_cart._ours/index.html">
+      <img src="images/placeholder.png" alt="A_woman_in_a_grocery_store_looking_into_a_freezer_section_with_a_shopping_cart. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_shopping_and_admiring_a_window_display_at_a_boutique_store._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_woman_shopping_and_admiring_a_window_display_at_a_boutique_store. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_shopping_and_admiring_a_window_display_at_a_boutique_store._ours/index.html">
+      <img src="images/placeholder.png" alt="A_woman_shopping_and_admiring_a_window_display_at_a_boutique_store. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_sitting_on_a_motorcycle_under_a_bridge,_looking_away._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_woman_sitting_on_a_motorcycle_under_a_bridge,_looking_away. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_sitting_on_a_motorcycle_under_a_bridge,_looking_away._ours/index.html">
+      <img src="images/placeholder.png" alt="A_woman_sitting_on_a_motorcycle_under_a_bridge,_looking_away. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_wearing_a_red_beanie_looking_out_through_a_round_window,_in_a_wooden_building._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_woman_wearing_a_red_beanie_looking_out_through_a_round_window,_in_a_wooden_building. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_wearing_a_red_beanie_looking_out_through_a_round_window,_in_a_wooden_building._ours/index.html">
+      <img src="images/placeholder.png" alt="A_woman_wearing_a_red_beanie_looking_out_through_a_round_window,_in_a_wooden_building. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_wearing_a_red_beanie_looking_out_through_a_round_window._depthc/index.html">
+      <img src="images/placeholder.png" alt="A_woman_wearing_a_red_beanie_looking_out_through_a_round_window. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/A_woman_wearing_a_red_beanie_looking_out_through_a_round_window._ours/index.html">
+      <img src="images/placeholder.png" alt="A_woman_wearing_a_red_beanie_looking_out_through_a_round_window. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/An_airport_terminal_with_people_sitting_and_waiting._depthc/index.html">
+      <img src="images/placeholder.png" alt="An_airport_terminal_with_people_sitting_and_waiting. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/An_airport_terminal_with_people_sitting_and_waiting._ours/index.html">
+      <img src="images/placeholder.png" alt="An_airport_terminal_with_people_sitting_and_waiting. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/An_exterior_view_of_a_stylish_cafe_with_a_glass_window._depthc/index.html">
+      <img src="images/placeholder.png" alt="An_exterior_view_of_a_stylish_cafe_with_a_glass_window. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/An_exterior_view_of_a_stylish_cafe_with_a_glass_window._ours/index.html">
+      <img src="images/placeholder.png" alt="An_exterior_view_of_a_stylish_cafe_with_a_glass_window. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/Shoppers_walking_by_stores_with_decorated_railings._depthc/index.html">
+      <img src="images/placeholder.png" alt="Shoppers_walking_by_stores_with_decorated_railings. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/Shoppers_walking_by_stores_with_decorated_railings._ours/index.html">
+      <img src="images/placeholder.png" alt="Shoppers_walking_by_stores_with_decorated_railings. ours" />
+      <p>ours</p>
+    </a>
+    <a class="thumbnail" href="viewers/Two_women_standing_outside_a_store,_chatting_and_looking_into_the_window._depthc/index.html">
+      <img src="images/placeholder.png" alt="Two_women_standing_outside_a_store,_chatting_and_looking_into_the_window. depthcrafter" />
+      <p>depthcrafter</p>
+    </a>
+    <a class="thumbnail" href="viewers/Two_women_standing_outside_a_store,_chatting_and_looking_into_the_window._ours/index.html">
+      <img src="images/placeholder.png" alt="Two_women_standing_outside_a_store,_chatting_and_looking_into_the_window. ours" />
+      <p>ours</p>
+    </a>
+
+  </div>
+</body>
+</html>
