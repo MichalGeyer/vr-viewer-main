@@ -129,7 +129,7 @@ def generate_thumbnail_html(folder_name: str, prompt: str, label: str) -> str:
     alt_text = f"{prompt} {label}"
     # <img src="{thumbnail_path}" alt="{alt_text}" />
     html_snippet = f"""    <a class="thumbnail" href="{index_path}">
-      <img src="https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm/images/{prompt}.png" alt="{alt_text}" />
+      <img src=https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm/images/{prompt}.png" alt="{alt_text}" />
       <p>{label}</p>
     </a>
 """
