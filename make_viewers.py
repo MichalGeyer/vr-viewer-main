@@ -3,8 +3,8 @@ import shutil
 
 STEREO_JS_SOURCE='example/stereo.js'
 SAVE_PATH = 'viewers'
-PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/VR-viewer/pairs-user-study"  # https path used inside <source>
-VIDEOS_LOCAL_PATH = '../VR-viewer/pairs-user-study/'
+PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study"  # https path used inside <source>
+VIDEOS_LOCAL_PATH = '../vr-viewer-files-webm/pairs-user-study-webm/'
 
 
 HTML_TEMPLATE = """<!DOCTYPE html>
@@ -81,6 +81,8 @@ def main():
             print(f"Created HTML for prompt: {prompt}")
         
         else:
+            if prompt.startswith('.'):
+                continue
             filename = 'comparison_temporal' if  VIEWER_TYPE == 'temporal_compare' else 'comparison_spatial'
             prompt_folder = os.path.join(SAVE_PATH, f"{prompt}_{filename}")
             os.makedirs(prompt_folder, exist_ok=True)
