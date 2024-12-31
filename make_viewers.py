@@ -3,7 +3,7 @@ import shutil
 
 STEREO_JS_SOURCE='example/stereo.js'
 SAVE_PATH = 'viewers'
-PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study"  # https path used inside <source>
+PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm"  # https path used inside <source>
 VIDEOS_LOCAL_PATH = '../vr-viewer-files-webm/pairs-user-study-webm/'
 
 
