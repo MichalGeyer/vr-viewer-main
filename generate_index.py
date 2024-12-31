@@ -141,8 +141,8 @@ def main():
     for item in os.listdir(VIEWERS_DIR):
         if item.endswith('depthc') or '.DS' in item or item == 'images':
             continue
-        if not item.endswith('_comparison_spatial'):
-            continue
+        # if not item.endswith('_comparison_spatial'):
+        #     continue
         full_path = os.path.join(VIEWERS_DIR, item)
         if os.path.isdir(full_path):
             viewer_folders.append(item)
