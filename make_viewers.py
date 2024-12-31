@@ -2,6 +2,7 @@ import os
 import shutil
 
 STEREO_JS_SOURCE='example/stereo.js'
+STEREO_JS_SOURCE_AR2 = 'example_ar2/stereo.js'
 SAVE_PATH = 'viewers'
 PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm"  # https path used inside <source>
 VIDEOS_LOCAL_PATH = '../vr-viewer-files-webm/pairs-user-study-webm/'
@@ -52,7 +53,7 @@ def create_html(prompt_name: str, result: str) -> str:
     )
 
 def main():
-    VIEWER_TYPE = 'temporal_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
+    VIEWER_TYPE = 'spatial_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
     assert VIEWER_TYPE in ['seperate', 'temporal_compare', 'spatial_compare'], "Invalid viewer type"
     # Go through each item in the video folder
     for prompt in os.listdir(VIDEOS_LOCAL_PATH):
@@ -93,7 +94,7 @@ def main():
             # Write index.html into each subfolder
             with open(os.path.join(prompt_folder, "index.html"), "w", encoding="utf-8") as f:
                 f.write(html)
-            shutil.copy2(STEREO_JS_SOURCE, prompt_folder)
+            shutil.copy2(STEREO_JS_SOURCE, prompt_folder) if VIEWER_TYPE == 'temporal_compare' else shutil.copy2(STEREO_JS_SOURCE_AR2, prompt_folder)
 
 if __name__ == "__main__":
     main()
