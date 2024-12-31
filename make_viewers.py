@@ -93,6 +93,7 @@ def main():
             # Write index.html into each subfolder
             with open(os.path.join(prompt_folder, "index.html"), "w", encoding="utf-8") as f:
                 f.write(html)
+            shutil.copy2(STEREO_JS_SOURCE, prompt_folder)
 
 if __name__ == "__main__":
     main()
