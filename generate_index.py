@@ -139,7 +139,7 @@ def main():
     # Gather all subfolders in ./viewers
     viewer_folders = []
     for item in os.listdir(VIEWERS_DIR):
-        if item.endswith('depthc') or '.DS' in item:
+        if item.endswith('depthc') or '.DS' in item or item == 'images':
             continue
         if not item.endswith('_comparison_spatial'):
             continue
