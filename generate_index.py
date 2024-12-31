@@ -104,6 +104,12 @@ def parse_folder_name(folder_name: str):
     elif folder_name.endswith("_warp_inpaint"):
         prompt = folder_name[:-(len("_warp_inpaint"))]  # remove "_depthc"
         label = "warp_inpaint"
+    elif folder_name.endswith("_comparison_spatial"):
+        prompt = folder_name[:-(len("_comparison_spatial"))]
+        label = "comparison_spatial"
+    elif folder_name.endswith("_comparison_temporal"):
+        prompt = folder_name[:-(len("_comparison_temporal"))]
+        label = "comparison_temporal"
     else:
         prompt = folder_name
         label = "unknown"
@@ -134,6 +140,8 @@ def main():
     viewer_folders = []
     for item in os.listdir(VIEWERS_DIR):
         if item.endswith('depthc') or '.DS' in item:
+            continue
+        if not item.endswith('_comparison_spatial'):
             continue
         full_path = os.path.join(VIEWERS_DIR, item)
         if os.path.isdir(full_path):

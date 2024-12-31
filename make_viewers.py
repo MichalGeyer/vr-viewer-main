@@ -31,14 +31,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     
     <video id="video" loop muted crossorigin="anonymous" playsinline style="display:none">
       <source src="{commented_path}" type="video/webm">
-      <source src="{actual_path}" type="video/mp4">
     </video>
     
     <script type="module" src="stereo.js"></script>
 </body>
 </html>
 """
-
+#       <source src="{actual_path}" type="video/mp4">
 def create_html(prompt_name: str, result: str) -> str:
     """
     Generate the HTML content for a given prompt and result.
@@ -53,30 +52,45 @@ def create_html(prompt_name: str, result: str) -> str:
     )
 
 def main():
+    VIEWER_TYPE = 'spatial_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
+    assert VIEWER_TYPE in ['seperate', 'temporal_compare', 'spatial_compare'], "Invalid viewer type"
     # Go through each item in the video folder
     for prompt in os.listdir(VIDEOS_LOCAL_PATH):
+        if VIEWER_TYPE == 'seperate':
         # Create subfolders for each result type
-        ours_folder = os.path.join(SAVE_PATH, f"{prompt}_ours")
-        warp_inpaint_folder = os.path.join(SAVE_PATH, f"{prompt}_warp_inpaint")
+            ours_folder = os.path.join(SAVE_PATH, f"{prompt}_ours")
+            warp_inpaint_folder = os.path.join(SAVE_PATH, f"{prompt}_warp_inpaint")
+            
+            os.makedirs(ours_folder, exist_ok=True)
+            os.makedirs(warp_inpaint_folder, exist_ok=True)
+            
+            # Generate the HTML for each result
+            ours_html = create_html(prompt, "ours")
+            warp_inpaint_html = create_html(prompt, "warp_inpaint")
+            
+            # Write index.html into each subfolder
+            with open(os.path.join(ours_folder, "index.html"), "w", encoding="utf-8") as f:
+                f.write(ours_html)
+            
+            with open(os.path.join(warp_inpaint_folder, "index.html"), "w", encoding="utf-8") as f:
+                f.write(warp_inpaint_html)
+            
+            # Copy stereo.js to each subfolder
+            shutil.copy2(STEREO_JS_SOURCE, ours_folder)
+            shutil.copy2(STEREO_JS_SOURCE, warp_inpaint_folder)
+            print(f"Created HTML for prompt: {prompt}")
         
-        os.makedirs(ours_folder, exist_ok=True)
-        os.makedirs(warp_inpaint_folder, exist_ok=True)
-        
-        # Generate the HTML for each result
-        ours_html = create_html(prompt, "ours")
-        warp_inpaint_html = create_html(prompt, "warp_inpaint")
-        
-        # Write index.html into each subfolder
-        with open(os.path.join(ours_folder, "index.html"), "w", encoding="utf-8") as f:
-            f.write(ours_html)
-        
-        with open(os.path.join(warp_inpaint_folder, "index.html"), "w", encoding="utf-8") as f:
-            f.write(warp_inpaint_html)
-        
-        # Copy stereo.js to each subfolder
-        shutil.copy2(STEREO_JS_SOURCE, ours_folder)
-        shutil.copy2(STEREO_JS_SOURCE, warp_inpaint_folder)
-        print(f"Created HTML for prompt: {prompt}")
+        else:
+            filename = 'comparison_temporal' if  VIEWER_TYPE == 'temporal_compare' else 'comparison_spatial'
+            prompt_folder = os.path.join(SAVE_PATH, f"{prompt}_{filename}")
+            os.makedirs(prompt_folder, exist_ok=True)
+            
+            # Generate the HTML for each result
+            html = create_html(prompt, filename)
+            
+            # Write index.html into each subfolder
+            with open(os.path.join(prompt_folder, "index.html"), "w", encoding="utf-8") as f:
+                f.write(html)
 
 if __name__ == "__main__":
     main()
