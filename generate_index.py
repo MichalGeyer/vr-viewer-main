@@ -130,6 +130,8 @@ def main():
     # Gather all subfolders in ./viewers
     viewer_folders = []
     for item in os.listdir(VIEWERS_DIR):
+        if item.endswith('depthc') or '.DS' in item:
+            continue
         full_path = os.path.join(VIEWERS_DIR, item)
         if os.path.isdir(full_path):
             viewer_folders.append(item)

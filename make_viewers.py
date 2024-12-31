@@ -30,7 +30,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
     
     <video id="video" loop muted crossorigin="anonymous" playsinline style="display:none">
-      <source src="{commented_path}" type="video/mp4">
+      <source src="{commented_path}" type="video/webm">
       <source src="{actual_path}" type="video/mp4">
     </video>
     
@@ -44,7 +44,7 @@ def create_html(prompt_name: str, result: str) -> str:
     Generate the HTML content for a given prompt and result.
     E.g. result can be 'ours' or 'depth_c'.
     """
-    commented_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.mp4"
+    commented_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.webm"
     actual_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.mp4"
     
     return HTML_TEMPLATE.format(
@@ -57,25 +57,25 @@ def main():
     for prompt in os.listdir(VIDEOS_LOCAL_PATH):
         # Create subfolders for each result type
         ours_folder = os.path.join(SAVE_PATH, f"{prompt}_ours")
-        depthc_folder = os.path.join(SAVE_PATH, f"{prompt}_depthc")
+        warp_inpaint_folder = os.path.join(SAVE_PATH, f"{prompt}_warp_inpaint")
         
         os.makedirs(ours_folder, exist_ok=True)
-        os.makedirs(depthc_folder, exist_ok=True)
+        os.makedirs(warp_inpaint_folder, exist_ok=True)
         
         # Generate the HTML for each result
         ours_html = create_html(prompt, "ours")
-        depthc_html = create_html(prompt, "depth_crafter")
+        warp_inpaint_html = create_html(prompt, "warp_inpaint")
         
         # Write index.html into each subfolder
         with open(os.path.join(ours_folder, "index.html"), "w", encoding="utf-8") as f:
             f.write(ours_html)
         
-        with open(os.path.join(depthc_folder, "index.html"), "w", encoding="utf-8") as f:
-            f.write(depthc_html)
+        with open(os.path.join(warp_inpaint_folder, "index.html"), "w", encoding="utf-8") as f:
+            f.write(warp_inpaint_html)
         
         # Copy stereo.js to each subfolder
         shutil.copy2(STEREO_JS_SOURCE, ours_folder)
-        shutil.copy2(STEREO_JS_SOURCE, depthc_folder)
+        shutil.copy2(STEREO_JS_SOURCE, warp_inpaint_folder)
         print(f"Created HTML for prompt: {prompt}")
 
 if __name__ == "__main__":
