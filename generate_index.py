@@ -101,6 +101,9 @@ def parse_folder_name(folder_name: str):
     elif folder_name.endswith("_depthc"):
         prompt = folder_name[:-7]  # remove "_depthc"
         label = "depthcrafter"
+    elif folder_name.endswith("_warp_inpaint"):
+        prompt = folder_name[:-(len("_warp_inpaint"))]  # remove "_depthc"
+        label = "warp_inpaint"
     else:
         prompt = folder_name
         label = "unknown"
