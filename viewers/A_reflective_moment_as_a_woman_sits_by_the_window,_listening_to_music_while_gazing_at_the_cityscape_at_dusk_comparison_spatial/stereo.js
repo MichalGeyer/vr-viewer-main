@@ -29,7 +29,7 @@ function init() {
   camera.layers.enable(1); // left-eye layer
 
   // Left-eye quad
-  const geometry1 = new THREE.PlaneGeometry(1, 1);
+  const geometry1 = new THREE.PlaneGeometry(2, 1);
   const uvs1 = geometry1.attributes.uv.array;
   for (let i = 0; i < uvs1.length; i += 2) {
     // scale u from 0..1 to 0..0.5
@@ -44,7 +44,7 @@ function init() {
   scene.add(mesh1);
 
   // Right-eye quad
-  const geometry2 = new THREE.PlaneGeometry(1, 1);
+  const geometry2 = new THREE.PlaneGeometry(2, 1);
   const uvs2 = geometry2.attributes.uv.array;
   for (let i = 0; i < uvs2.length; i += 2) {
     uvs2[i] *= 0.5;   // 0..1 → 0..0.5
