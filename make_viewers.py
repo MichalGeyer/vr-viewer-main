@@ -53,10 +53,13 @@ def create_html(prompt_name: str, result: str) -> str:
     )
 
 def main():
-    VIEWER_TYPE = 'spatial_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
+    VIEWER_TYPE = 'temporal_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
     assert VIEWER_TYPE in ['seperate', 'temporal_compare', 'spatial_compare'], "Invalid viewer type"
     # Go through each item in the video folder
     for prompt in os.listdir(VIDEOS_LOCAL_PATH):
+        if not 'kitchen' in prompt:
+            continue
+        print(prompt)
         if VIEWER_TYPE == 'seperate':
         # Create subfolders for each result type
             ours_folder = os.path.join(SAVE_PATH, f"{prompt}_ours")
