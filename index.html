@@ -62,11 +62,7 @@
 </head>
 <body>
   <h1>3D Viewer Navigator</h1>
-  
-  <!-- "Start" button to begin navigating through the viewers -->
   <button id="startButton" class="button">Start</button>
-
-  <!-- Container that will hold the iframe and the navigation arrows -->
   <div class="viewer-container" id="viewerContainer">
     <iframe id="viewerFrame" src="" frameborder="0"></iframe>
     <div class="nav-buttons">
@@ -78,6 +74,7 @@
   <script>
     // Array of viewer URLs
     const viewerUrls = [
+      "viewers/A_glass_door_with_a_sign_reading_'Closed'_in_Hebrew,_showing_reflections_of_the_street_comparison_spatial/index.html",
       "viewers/A_minimalist_dining_area_with_modern_furniture_and_decor_comparison_spatial/index.html",
       "viewers/A_modern_kitchen_with_cream_cabinetry,_stainless_steel_appliances,_and_a_central_island_comparison_spatial/index.html",
       "viewers/A_person_in_white_clothing_is_seen_through_a_window_comparison_spatial/index.html",
@@ -92,8 +89,21 @@
       "viewers/Close-up_of_someone's_hand_resting_on_a_windowsill,_seen_from_the_outside_comparison_spatial/index.html",
       "viewers/Empty_modern_kitchen_interior_seen_through_a_glass_wall_comparison_spatial/index.html",
       "viewers/Image_of_a_child_reaching_out_towards_a_person,_seen_through_a_glass_panel_comparison_spatial/index.html",
+      "viewers/Man_holding_an_umbrella,_standing_on_a_pier_on_a_rainy_day_comparison_spatial/index.html",
+      "viewers/Rear_view_of_a_parked_car,_with_items_inside_and_reflections_on_the_back_window_comparison_spatial/index.html",
       "viewers/Reflection_of_a_dimly_lit_room_with_furniture,_captured_through_a_glass_table_comparison_spatial/index.html",
       "viewers/Reflection_of_a_man_inside_a_refrigerator_door,_surrounded_by_food_items_and_a_clock_on_the_wall_comparison_spatial/index.html",
+      "viewers/Side_view_of_a_parked_car,_with_a_reflection_of_a_person_on_the_window_comparison_spatial/index.html",
+      "viewers/View_of_a_modern_city_skyline_through_a_large_window_with_hanging_decorations_comparison_spatial/index.html",
+      "viewers/a_classic_office_with_a_desk_and_a_chair_comparison_spatial/index.html",
+      "viewers/a_person_looking_at_buildings_outside_reflected_on_a_glass_window_comparison_spatial/index.html",
+      "viewers/a_person_looking_out_the_window_at_a_forest,_reflected_on_the_glass_comparison_spatial/index.html",
+      "viewers/a_woman_knocking_outside_knocking_a_glass_window_comparison_spatial/index.html",
+      "viewers/a_woman_nodding_her_hed_behind_a_glass_door_comparison_spatial/index.html",
+      "viewers/a_woman_sitting_in_front_of_a_glass_window,_a_cityscape_outside_2_comparison_spatial/index.html",
+      "viewers/a_woman_sitting_in_front_of_a_glass_window,_a_cityscape_outside_comparison_spatial/index.html",
+      "viewers/a_woman_standing_in_the_balcony_behind_a_glass_door_comparison_spatial/index.html",
+      // "viewers/images_comparison_spatial/index.html"
     ];
 
     let currentIndex = 0;
@@ -104,23 +114,17 @@
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
 
-    // Initialize the iframe with the first URL
     function showViewer(index) {
       viewerFrame.src = viewerUrls[index];
     }
 
-    // "Start" button logic
     startButton.addEventListener('click', () => {
-      // Hide the start button, show the viewer container
       startButton.style.display = 'none';
       viewerContainer.style.display = 'flex';
-
-      // Reset to the first viewer
       currentIndex = 0;
       showViewer(currentIndex);
     });
 
-    // "Next" button logic
     nextButton.addEventListener('click', () => {
       if (currentIndex < viewerUrls.length - 1) {
         currentIndex++;
@@ -128,7 +132,6 @@
       }
     });
 
-    // "Prev" button logic
     prevButton.addEventListener('click', () => {
       if (currentIndex > 0) {
         currentIndex--;
