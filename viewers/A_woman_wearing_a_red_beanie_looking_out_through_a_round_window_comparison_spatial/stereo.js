@@ -17,11 +17,13 @@ function init() {
 
   // Ensure video starts on user interaction (important for mobile)
   container.addEventListener('click', () => {
-    video.play().then(() => {
-      console.log('Video started successfully');
-    }).catch((error) => {
-      console.error('Error starting video:', error);
-    });
+    if (playCount < maxPlays) {
+      video.play().then(() => {
+        console.log('Video started successfully');
+      }).catch((error) => {
+        console.error('Error starting video:', error);
+      });
+    }
   });
 
   // Wait until the video can play
@@ -107,10 +109,18 @@ function init() {
 }
 
 function pauseVideoAtFrame(frame) {
-  const currentTime = frame / fps; // Calculate time for the frame
-  video.currentTime = currentTime; // Seek to that time
-  video.pause(); // Pause the video
-  console.log(`Paused video at frame ${frame} (time: ${currentTime}s)`);
+  const targetTime = frame / fps; // Calculate time for the frame
+  video.currentTime = targetTime; // Seek to the target frame time
+  console.log(`Seeking to ${targetTime}s (frame ${frame})`);
+
+  // Ensure the video pauses immediately after seeking
+  const onSeeked = () => {
+    console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
+    video.pause(); // Pause the video immediately
+    video.removeEventListener('seeked', onSeeked); // Clean up listener
+  };
+
+  video.addEventListener('seeked', onSeeked); // Pause once seeking is done
 }
 
 function onWindowResize() {
