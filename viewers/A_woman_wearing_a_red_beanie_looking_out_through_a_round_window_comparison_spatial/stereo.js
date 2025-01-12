@@ -3,7 +3,7 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 let camera, scene, renderer, mesh1, mesh2, video;
 let playCount = 0; // Track how many times the video has played
-const maxPlays = 4; // Set how many times the video should replay
+const maxPlays = 3; // Set how many times the video should replay
 const pauseFrame = 48; // Frame to pause on
 const fps = 16; // Frame rate of the video
 
@@ -14,17 +14,28 @@ function init() {
 
   // --- VIDEO ---
   video = document.getElementById('video');
-  
+
   // Ensure video starts on user interaction (important for mobile)
   container.addEventListener('click', () => {
-    if (playCount < maxPlays) {
-      video.play();
-    }
+    video.play().then(() => {
+      console.log('Video started successfully');
+    }).catch((error) => {
+      console.error('Error starting video:', error);
+    });
+  });
+
+  // Wait until the video can play
+  video.addEventListener('canplay', () => {
+    console.log('Video is ready to play');
+    video.play().catch((error) => {
+      console.error('Error playing video:', error);
+    });
   });
 
   // Event listener for when the video ends
   video.addEventListener('ended', () => {
     playCount++;
+    console.log(`Video ended. Play count: ${playCount}`);
     if (playCount < maxPlays) {
       video.play(); // Replay the video
     } else {
