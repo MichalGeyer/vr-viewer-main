@@ -32,8 +32,8 @@ function init() {
     video.play().catch((error) => {
       console.error('Error playing video:', error);
     });
-  });
-
+  }, { once: true }); // Ensure it only fires once
+  
   // Event listener for when the video ends
   video.addEventListener('ended', () => {
     playCount++;
@@ -43,7 +43,24 @@ function init() {
     } else if (playCount === maxPlays) {
       pauseVideoAtFrame(pauseFrame); // Pause at the specified frame
     }
-  });  
+  });
+  
+  // Function to pause the video at a specific frame
+  function pauseVideoAtFrame(frame) {
+    const targetTime = frame / fps; // Calculate the time for the frame
+    video.currentTime = targetTime; // Seek to the target frame time
+    console.log(`Seeking to ${targetTime}s (frame ${frame})`);
+  
+    // Ensure the video pauses after seeking
+    const onSeeked = () => {
+      video.pause(); // Pause the video
+      console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
+      video.removeEventListener('seeked', onSeeked); // Remove the seeked listener
+    };
+  
+    video.addEventListener('seeked', onSeeked); // Listen for the seek to complete
+  }
+  
 
   // Create a video texture
   const texture = new THREE.VideoTexture(video);
