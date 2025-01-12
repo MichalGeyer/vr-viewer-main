@@ -1,0 +1,6 @@
+    <!-- Descriptive Text -->
+    <p style="text-align: center; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+      In this example, notice that in the video on the right, <br>
+      the reflection of the man on the screen seems "flat", as if it is a part of the screen; <br>
+      while in the video on the left, you can tell that the reflection is of a man further away from the screen.<br>
+  </p>
