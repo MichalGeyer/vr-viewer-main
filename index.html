@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>3D Viewer Navigator</title>
+  <title>3D Viewer Survay</title>
   <style>
     * {
       margin: 0;
@@ -18,10 +18,20 @@
       height: 100vh;
       background-color: #f5f5f5;
       font-family: sans-serif;
+      overflow: hidden;
     }
 
     h1 {
+      margin-bottom: 10px;
+    }
+
+    p.instructions {
+      max-width: 600px;
       margin-bottom: 20px;
+      font-size: 14px;
+      text-align: center;
+      color: #555;
+      line-height: 1.5;
     }
 
     .button {
@@ -43,32 +53,83 @@
       display: none;
       flex-direction: column;
       align-items: center;
+      width: 100%;
+      height: 100%;
     }
 
     iframe {
-      width: 80vw;
-      height: 60vh;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      background-color: #fff;
-      margin-bottom: 20px;
+      width: 100vw;
+      height: 100vh;
+      border: none;
     }
 
-    .nav-buttons {
+    .immersive-nav {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 20px;
+    }
+
+    .immersive-nav .button {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .immersive-nav .button:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
     }
   </style>
 </head>
 <body>
+  <!-- Initial Screen -->
   <h1>3D Viewer Navigator</h1>
-  <button id="startButton" class="button">Start</button>
+  <p class="instructions">
+    Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
+    The videos will play twice and then pause on a frame.<br>
+    Observe the reflections on surfaces like windows or shiny furniture.<br>
+    Focus on which video shows reflections that feel more <strong>realistic</strong> and have a <strong>plausible 3D depth</strong>.<br>
+    When you’ve made your decision, read the <strong>video ID</strong> and say <strong>"left"</strong> or <strong>"right"</strong> to register your choice.<br>
+    Thank you for your input!
+  </p>
+  <button id="testViewerButton" class="button">Test Viewer</button>
+  <button id="startButton" class="button">Main Viewer</button>
+
+  <!-- Viewer Container -->
   <div class="viewer-container" id="viewerContainer">
-    <iframe id="viewerFrame" src="" frameborder="0"></iframe>
-    <div class="nav-buttons">
-      <button id="prevButton" class="button">&larr; Prev</button>
-      <button id="nextButton" class="button">Next &rarr;</button>
+    <iframe id="viewerFrame" src=""></iframe>
+    <div class="immersive-nav">
+      <button id="immersivePrevButton" class="button">&larr; Prev</button>
+      <button id="immersiveNextButton" class="button">Next &rarr;</button>
     </div>
+    <button id="backButton" class="back-button">Back</button>
   </div>
 
   <script>
@@ -106,36 +167,90 @@
       // "viewers/images_comparison_spatial/index.html"
     ];
 
-    let currentIndex = 0;
+    const testViewerUrls = [
+      "viewers/test_viewer_1/index.html",
+      "viewers/test_viewer_2/index.html"
+    ];
 
+
+    let currentIndex = 0;
+    let isTestViewer = false;
+
+    // DOM Elements
     const startButton = document.getElementById('startButton');
+    const testViewerButton = document.getElementById('testViewerButton');
     const viewerContainer = document.getElementById('viewerContainer');
     const viewerFrame = document.getElementById('viewerFrame');
-    const prevButton = document.getElementById('prevButton');
-    const nextButton = document.getElementById('nextButton');
+    const immersivePrevButton = document.getElementById('immersivePrevButton');
+    const immersiveNextButton = document.getElementById('immersiveNextButton');
+    const backButton = document.getElementById('backButton');
 
-    function showViewer(index) {
-      viewerFrame.src = viewerUrls[index];
+    // Show a viewer by its index
+    function showViewer(index, isTest = false) {
+      const urls = isTest ? testViewerUrls : viewerUrls;
+      viewerFrame.src = urls[index];
     }
 
-    startButton.addEventListener('click', () => {
-      startButton.style.display = 'none';
-      viewerContainer.style.display = 'flex';
-      currentIndex = 0;
-      showViewer(currentIndex);
-    });
-
-    nextButton.addEventListener('click', () => {
-      if (currentIndex < viewerUrls.length - 1) {
+    // Navigation logic
+    function goToNextVideo() {
+      const urls = isTestViewer ? testViewerUrls : viewerUrls;
+      if (currentIndex < urls.length - 1) {
         currentIndex++;
-        showViewer(currentIndex);
+        showViewer(currentIndex, isTestViewer);
       }
-    });
+    }
 
-    prevButton.addEventListener('click', () => {
+    function goToPreviousVideo() {
       if (currentIndex > 0) {
         currentIndex--;
-        showViewer(currentIndex);
+        showViewer(currentIndex, isTestViewer);
+      }
+    }
+
+    // Start Main Viewer
+    startButton.addEventListener('click', () => {
+      isTestViewer = false;
+      currentIndex = 0;
+      showViewer(currentIndex);
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.instructions').style.display = 'none';
+      startButton.style.display = 'none';
+      testViewerButton.style.display = 'none';
+      viewerContainer.style.display = 'flex';
+    });
+
+    // Start Test Viewer
+    testViewerButton.addEventListener('click', () => {
+      isTestViewer = true;
+      currentIndex = 0;
+      showViewer(currentIndex, true);
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.instructions').style.display = 'none';
+      startButton.style.display = 'none';
+      testViewerButton.style.display = 'none';
+      viewerContainer.style.display = 'flex';
+    });
+
+    // Back Button Logic
+    backButton.addEventListener('click', () => {
+      viewerContainer.style.display = 'none';
+      viewerFrame.src = ''; // Clear the iframe
+      document.querySelector('h1').style.display = 'block';
+      document.querySelector('.instructions').style.display = 'block';
+      startButton.style.display = 'block';
+      testViewerButton.style.display = 'block';
+    });
+
+    // Button Event Listeners
+    immersiveNextButton.addEventListener('click', goToNextVideo);
+    immersivePrevButton.addEventListener('click', goToPreviousVideo);
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') {
+        goToNextVideo();
+      } else if (event.key === 'ArrowLeft') {
+        goToPreviousVideo();
       }
     });
   </script>
