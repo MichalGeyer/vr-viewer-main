@@ -40,10 +40,10 @@ function init() {
     console.log(`Video ended. Play count: ${playCount}`);
     if (playCount < maxPlays) {
       video.play(); // Replay the video
-    } else {
+    } else if (playCount === maxPlays) {
       pauseVideoAtFrame(pauseFrame); // Pause at the specified frame
     }
-  });
+  });  
 
   // Create a video texture
   const texture = new THREE.VideoTexture(video);
@@ -113,14 +113,19 @@ function pauseVideoAtFrame(frame) {
   video.currentTime = targetTime; // Seek to the target frame time
   console.log(`Seeking to ${targetTime}s (frame ${frame})`);
 
-  // Ensure the video pauses immediately after seeking
   const onSeeked = () => {
+    video.pause(); // Ensure the video pauses after seeking
     console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
-    video.pause(); // Pause the video immediately
-    video.removeEventListener('seeked', onSeeked); // Clean up listener
+    video.removeEventListener('seeked', onSeeked); // Remove this listener to prevent repeated triggers
+    video.removeEventListener('ended', onEnded); // Remove the ended listener to stop playback completely
   };
 
-  video.addEventListener('seeked', onSeeked); // Pause once seeking is done
+  const onEnded = () => {
+    console.log("Playback has already been stopped.");
+  };
+
+  video.addEventListener('seeked', onSeeked); // Listen for the seek to complete
+  video.addEventListener('ended', onEnded); // Safeguard to prevent replay after pausing
 }
 
 function onWindowResize() {
