@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>3D Video Survey</title>
+  <title>3D Viewer Navigator</title>
   <style>
     * {
       margin: 0;
@@ -18,20 +18,10 @@
       height: 100vh;
       background-color: #f5f5f5;
       font-family: sans-serif;
-      overflow: hidden;
     }
 
     h1 {
-      margin-bottom: 10px;
-    }
-
-    p.instructions {
-      max-width: 600px;
       margin-bottom: 20px;
-      font-size: 14px;
-      text-align: center;
-      color: #555;
-      line-height: 1.5;
     }
 
     .button {
@@ -53,14 +43,20 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-      height: 100%;
     }
 
     iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
+      width: 80vw;
+      height: 60vh;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
     }
 
     .back-button {
@@ -100,10 +96,14 @@
 
   <!-- Viewer Container -->
   <div class="viewer-container" id="viewerContainer">
-    <iframe id="viewerFrame" src=""></iframe>
-    <button id="backButton" class="back-button">Back</button>
+    <div id="videoIdTitle" class="video-id-title"></div>
+    <iframe id="viewerFrame" src="" frameborder="0"></iframe>
+    <div class="nav-buttons">
+      <button id="prevButton" class="button">&larr; Prev</button>
+      <button id="nextButton" class="button">Next &rarr;</button>
+      <button id="backButton" class="back-button">Back</button>
+    </div>
   </div>
-
   <script>
     // Array of viewer URLs
     const viewerUrls = [
@@ -146,19 +146,19 @@
     ];
 
     let currentIndex = 0;
-    let isTestViewer = false;
 
-    // DOM Elements
     const startButton = document.getElementById('startButton');
-    const testViewerButton = document.getElementById('testViewerButton');
     const viewerContainer = document.getElementById('viewerContainer');
     const viewerFrame = document.getElementById('viewerFrame');
-    const backButton = document.getElementById('backButton');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
 
-    // Show a viewer by its index
-    function showViewer(index, isTest = false) {
+// Show a viewer by its index
+function showViewer(index, isTest = false) {
       const urls = isTest ? testViewerUrls : viewerUrls;
       viewerFrame.src = urls[index];
+      const videoId = urls[index].split('/').slice(-2, -1)[0].split('comparison_spatial')[0].replace(/_/g, ' '); // Extract the folder name as the ID
+      videoIdTitle.textContent = `VIDEO ID: ${videoId}`;
     }
 
     // Start Main Viewer
@@ -193,6 +193,27 @@
       document.querySelector('.instructions').style.display = 'block';
       startButton.style.display = 'block';
       testViewerButton.style.display = 'block';
+    });
+
+    startButton.addEventListener('click', () => {
+      startButton.style.display = 'none';
+      viewerContainer.style.display = 'flex';
+      currentIndex = 0;
+      showViewer(currentIndex);
+    });
+
+    nextButton.addEventListener('click', () => {
+      if (currentIndex < viewerUrls.length - 1) {
+        currentIndex++;
+        showViewer(currentIndex);
+      }
+    });
+
+    prevButton.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showViewer(currentIndex);
+      }
     });
   </script>
 </body>
