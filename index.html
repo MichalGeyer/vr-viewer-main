@@ -104,6 +104,12 @@
       <button id="backButton" class="back-button">Back</button>
     </div>
   </div>
+
+  <!-- Test Viewer Text -->
+  <div id="testViewerText" style="display: none; font-size: 16px; color: #333; margin-bottom: 10px; text-align: center;">
+    This is the test viewer. Use this to familiarize yourself with the task and ensure you understand it.
+  </div>
+
   <script>
     // Array of viewer URLs
     const viewerUrls = [
@@ -154,11 +160,12 @@
     const nextButton = document.getElementById('nextButton');
 
 // Show a viewer by its index
-function showViewer(index, isTest = false) {
+    function showViewer(index, isTest = false) {
       const urls = isTest ? testViewerUrls : viewerUrls;
       viewerFrame.src = urls[index];
       const videoId = urls[index].split('/').slice(-2, -1)[0].split('comparison_spatial')[0].replace(/_/g, ' '); // Extract the folder name as the ID
       videoIdTitle.textContent = `VIDEO ID: ${videoId}`;
+      document.getElementById('testViewerText').style.display = isTest ? 'block' : 'none'; // Show/hide test viewer text
     }
 
     // Start Main Viewer
