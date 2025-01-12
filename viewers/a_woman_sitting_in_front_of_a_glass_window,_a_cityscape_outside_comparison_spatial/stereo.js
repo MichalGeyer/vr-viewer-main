@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 let camera, scene, renderer, mesh1, mesh2, video;
+let playCount = 0; // Track how many times the video has played
+const maxPlays = 3; // Set how many times the video should replay
+const pauseFrame = 40; // Frame to pause on
+const fps = 16; // Frame rate of the video
 
 init();
 
@@ -10,11 +14,36 @@ function init() {
 
   // --- VIDEO ---
   video = document.getElementById('video');
-  // Ensure video starts on user interaction (esp. on mobile)
+
+  // Ensure video starts on user interaction (important for mobile)
   container.addEventListener('click', () => {
-    video.play();
+    if (playCount < maxPlays) {
+      video.play().then(() => {
+        console.log('Video started successfully');
+      }).catch((error) => {
+        console.error('Error starting video:', error);
+      });
+    }
   });
-  video.play();
+
+  // Wait until the video can play
+  video.addEventListener('canplay', () => {
+    console.log('Video is ready to play');
+    video.play().catch((error) => {
+      console.error('Error playing video:', error);
+    });
+  });
+
+  // Event listener for when the video ends
+  video.addEventListener('ended', () => {
+    playCount++;
+    console.log(`Video ended. Play count: ${playCount}`);
+    if (playCount < maxPlays) {
+      video.play(); // Replay the video
+    } else if (playCount === maxPlays) {
+      pauseVideoAtFrame(pauseFrame); // Pause at the specified frame
+    }
+  });  
 
   // Create a video texture
   const texture = new THREE.VideoTexture(video);
@@ -77,6 +106,26 @@ function init() {
 
   // Start animation
   renderer.setAnimationLoop(animate);
+}
+
+function pauseVideoAtFrame(frame) {
+  const targetTime = frame / fps; // Calculate time for the frame
+  video.currentTime = targetTime; // Seek to the target frame time
+  console.log(`Seeking to ${targetTime}s (frame ${frame})`);
+
+  const onSeeked = () => {
+    video.pause(); // Ensure the video pauses after seeking
+    console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
+    video.removeEventListener('seeked', onSeeked); // Remove this listener to prevent repeated triggers
+    video.removeEventListener('ended', onEnded); // Remove the ended listener to stop playback completely
+  };
+
+  const onEnded = () => {
+    console.log("Playback has already been stopped.");
+  };
+
+  video.addEventListener('seeked', onSeeked); // Listen for the seek to complete
+  video.addEventListener('ended', onEnded); // Safeguard to prevent replay after pausing
 }
 
 function onWindowResize() {
