@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 let camera, scene, renderer, mesh1, mesh2, video;
+let playCount = 0; // Track how many times the video has played
+const maxPlays = 4; // Set how many times the video should replay
+const pauseFrame = 48; // Frame to pause on
+const fps = 16; // Frame rate of the video
 
 init();
 
@@ -10,11 +14,23 @@ function init() {
 
   // --- VIDEO ---
   video = document.getElementById('video');
-  // Ensure video starts on user interaction (esp. on mobile)
+  
+  // Ensure video starts on user interaction (important for mobile)
   container.addEventListener('click', () => {
-    video.play();
+    if (playCount < maxPlays) {
+      video.play();
+    }
   });
-  video.play();
+
+  // Event listener for when the video ends
+  video.addEventListener('ended', () => {
+    playCount++;
+    if (playCount < maxPlays) {
+      video.play(); // Replay the video
+    } else {
+      pauseVideoAtFrame(pauseFrame); // Pause at the specified frame
+    }
+  });
 
   // Create a video texture
   const texture = new THREE.VideoTexture(video);
@@ -77,6 +93,13 @@ function init() {
 
   // Start animation
   renderer.setAnimationLoop(animate);
+}
+
+function pauseVideoAtFrame(frame) {
+  const currentTime = frame / fps; // Calculate time for the frame
+  video.currentTime = currentTime; // Seek to that time
+  video.pause(); // Pause the video
+  console.log(`Paused video at frame ${frame} (time: ${currentTime}s)`);
 }
 
 function onWindowResize() {
