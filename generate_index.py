@@ -1,175 +1,3 @@
-# import os
-
-# VIEWERS_DIR = "./viewers"
-# OUTPUT_INDEX = "index.html"  # Where we'll write the generated HTML
-
-# # HTML skeleton
-# HTML_HEAD = """<!DOCTYPE html>
-# <html lang="en">
-# <head>
-#   <meta charset="UTF-8">
-#   <title>3D Viewer</title>
-#   <style>
-#     /* Basic reset or box-sizing if desired */
-#     * {
-#       margin: 0;
-#       padding: 0;
-#       box-sizing: border-box;
-#     }
-
-#     /* Center everything on the page */
-#     body {
-#       display: flex;
-#       flex-direction: column;
-#       align-items: center;
-#       font-family: sans-serif;
-#       min-height: 100vh;
-#       background-color: #f5f5f5;
-#       padding: 20px;
-#     }
-
-#     /* Heading styling */
-#     h1 {
-#       margin: 20px 0;
-#     }
-
-#     /* Thumbnails container */
-#     .thumbnails {
-#       display: flex;
-#       flex-wrap: wrap;  /* allow wrapping if many folders */
-#       gap: 20px;        /* space between each thumbnail */
-#       max-width: 1200px;
-#       justify-content: center;
-#     }
-
-#     /* Individual thumbnail link */
-#     .thumbnail {
-#       text-align: center;
-#       text-decoration: none;
-#       color: #333;
-#       background-color: #fff;
-#       border: 1px solid #ddd;
-#       padding: 10px;
-#       border-radius: 8px;
-#       transition: box-shadow 0.3s ease;
-#       width: 180px;
-#     }
-
-#     .thumbnail:hover {
-#       box-shadow: 0 0 10px rgba(0,0,0,0.2);
-#     }
-
-#     /* Image styling */
-#     .thumbnail img {
-#       width: 150px;
-#       height: auto;
-#       display: block;
-#       margin: 0 auto 10px;
-#     }
-
-#     /* Caption styling */
-#     .thumbnail p {
-#       margin-top: 5px;
-#       font-size: 14px;
-#     }
-#   </style>
-# </head>
-# <body>
-#   <h1>3D Viewer</h1>
-#   <div class="thumbnails">
-# """
-
-# HTML_FOOT = """  </div>
-# </body>
-# </html>
-# """
-
-# def parse_folder_name(folder_name: str):
-#     """
-#     Extracts the prompt and the type (ours or depthcrafter)
-#     based on folder name patterns:
-#       - something_ours
-#       - something_depthc
-#     Returns:
-#       (prompt, label)
-#       e.g., ("A_modern_glass_building", "ours") 
-#             ("Another_prompt", "depthcrafter")
-#     """
-#     if folder_name.endswith("_ours"):
-#         prompt = folder_name[:-5]  # remove "_ours"
-#         label = "ours"
-#     elif folder_name.endswith("_depthc"):
-#         prompt = folder_name[:-7]  # remove "_depthc"
-#         label = "depthcrafter"
-#     elif folder_name.endswith("_warp_inpaint"):
-#         prompt = folder_name[:-(len("_warp_inpaint"))]  # remove "_depthc"
-#         label = "warp_inpaint"
-#     elif folder_name.endswith("_comparison_spatial"):
-#         prompt = folder_name[:-(len("_comparison_spatial"))]
-#         label = "comparison_spatial"
-#     elif folder_name.endswith("_comparison_temporal"):
-#         prompt = folder_name[:-(len("_comparison_temporal"))]
-#         label = "comparison_temporal"
-#     else:
-#         prompt = folder_name
-#         label = "unknown"
-#     return prompt, label
-
-# def generate_thumbnail_html(folder_name: str, prompt: str, label: str) -> str:
-#     """
-#     Returns the HTML snippet for a single thumbnail entry.
-#     Assumes thumbnail is at ./viewers/<folder_name>/thumbnail.png
-#     and index.html is at ./viewers/<folder_name>/index.html
-#     """
-#     relative_folder_path = os.path.join("viewers", folder_name)
-#     thumbnail_path = os.path.join(relative_folder_path, "thumbnail.png")
-#     index_path = os.path.join(relative_folder_path, "index.html")
-
-#     # alt text is "<prompt> ours" or "<prompt> depthcrafter"
-#     alt_text = f"{prompt} {label}"
-#     # <img src="{thumbnail_path}" alt="{alt_text}" />
-#     html_snippet = f"""    <a class="thumbnail" href="{index_path}">
-#       <img src='https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm/images/{prompt}.png' alt="{alt_text}" />
-#       <p>{label}</p>
-#     </a>
-# """
-#     return html_snippet
-
-# def main():
-#     # Gather all subfolders in ./viewers
-#     viewer_folders = []
-#     for item in os.listdir(VIEWERS_DIR):
-#         if item.endswith('depthc') or '.DS' in item or item == 'images':
-#             continue
-#         # if not item.endswith('_comparison_spatial'):
-#         #     continue
-#         full_path = os.path.join(VIEWERS_DIR, item)
-#         if os.path.isdir(full_path):
-#             viewer_folders.append(item)
-
-#     # Build up the thumbnail HTML
-#     thumbnails_html = ""
-#     for folder in sorted(viewer_folders):
-#         prompt, label = parse_folder_name(folder)
-#         # If you only want to include known types, skip unknown:
-#         # if label == "unknown":
-#         #     continue
-
-#         thumbnails_html += generate_thumbnail_html(folder, prompt, label)
-
-#     # Wrap with HEAD and FOOT
-#     final_html = HTML_HEAD + thumbnails_html + "\n" + HTML_FOOT
-
-#     # Write out the index.html file
-#     with open(OUTPUT_INDEX, "w", encoding="utf-8") as f:
-#         f.write(final_html)
-
-#     print(f"Generated {OUTPUT_INDEX} with {len(viewer_folders)} entries.")
-
-# if __name__ == "__main__":
-#     main()
-
-
 import os
 
 VIEWERS_DIR = "./viewers"
@@ -179,7 +7,7 @@ HTML_HEAD = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>3D Viewer Navigator</title>
+  <title>3D Video Survey</title>
   <style>
     * {
       margin: 0;
@@ -235,56 +63,123 @@ HTML_HEAD = """<!DOCTYPE html>
       display: flex;
       gap: 20px;
     }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+    }
   </style>
 </head>
 <body>
-  <h1>3D Viewer Navigator</h1>
-  <button id="startButton" class="button">Start</button>
+  <h1>3D Video Survey</h1>
+  <p class="instructions">
+    Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
+    The videos will play twice and then pause on a frame.<br>
+    Observe the reflections on surfaces like windows or shiny furniture.<br>
+    Focus on which video shows reflections that feel more <strong>realistic</strong> and have a <strong>plausible 3D depth</strong>.<br>
+    Start with the test viewer, to get familiar with the task and make sure you understand it.<br>
+    Thank you for your input!
+  </p>
+  <button id="testViewerButton" class="button">Test Viewer</button>
+  <button id="startButton" class="button">Main Viewer</button>
+
   <div class="viewer-container" id="viewerContainer">
+    <div id="videoIdTitle" class="video-id-title"></div>
     <iframe id="viewerFrame" src="" frameborder="0"></iframe>
     <div class="nav-buttons">
       <button id="prevButton" class="button">&larr; Prev</button>
       <button id="nextButton" class="button">Next &rarr;</button>
+      <button id="backButton" class="back-button">Back</button>
     </div>
   </div>
 
   <script>
-    // Array of viewer URLs
     const viewerUrls = [
 """
 
 HTML_FOOT = """    ];
 
+    const testViewerUrls = [
+    "viewers/TEST-VIDEO-A_bakery_display_case_showcasing_rows_of_freshly_baked_pastries_comparison_spatial/index.html",
+    "viewers/TEST-VIDEO-A_close-up_view_of_a_laptop_displaying_audio_software_comparison_spatial/index.html",
+    "viewers/TEST-VIDEO-An_underwater_view_featuring_rocks_and_clear_blue_water_comparison_spatial/index.html",
+    ];
+
     let currentIndex = 0;
+    let isTestViewer = false;
 
     const startButton = document.getElementById('startButton');
+    const testViewerButton = document.getElementById('testViewerButton');
     const viewerContainer = document.getElementById('viewerContainer');
     const viewerFrame = document.getElementById('viewerFrame');
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
+    const backButton = document.getElementById('backButton');
+    const videoIdTitle = document.getElementById('videoIdTitle');
 
-    function showViewer(index) {
-      viewerFrame.src = viewerUrls[index];
+    function showViewer(index, isTest = false) {
+      const urls = isTest ? testViewerUrls : viewerUrls;
+      viewerFrame.src = urls[index];
+      const videoId = urls[index].split('/').slice(-2, -1)[0].split('comparison_spatial')[0].replace(/_/g, ' ');
+      videoIdTitle.textContent = `VIDEO ID: ${videoId}`;
     }
 
     startButton.addEventListener('click', () => {
-      startButton.style.display = 'none';
-      viewerContainer.style.display = 'flex';
+      isTestViewer = false;
       currentIndex = 0;
       showViewer(currentIndex);
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.instructions').style.display = 'none';
+      startButton.style.display = 'none';
+      testViewerButton.style.display = 'none';
+      viewerContainer.style.display = 'flex';
     });
 
-    nextButton.addEventListener('click', () => {
-      if (currentIndex < viewerUrls.length - 1) {
-        currentIndex++;
-        showViewer(currentIndex);
-      }
+    testViewerButton.addEventListener('click', () => {
+      isTestViewer = true;
+      currentIndex = 0;
+      showViewer(currentIndex, true);
+      document.querySelector('h1').style.display = 'none';
+      document.querySelector('.instructions').style.display = 'none';
+      startButton.style.display = 'none';
+      testViewerButton.style.display = 'none';
+      viewerContainer.style.display = 'flex';
+    });
+
+    backButton.addEventListener('click', () => {
+      viewerContainer.style.display = 'none';
+      viewerFrame.src = '';
+      document.querySelector('h1').style.display = 'block';
+      document.querySelector('.instructions').style.display = 'block';
+      startButton.style.display = 'block';
+      testViewerButton.style.display = 'block';
     });
 
     prevButton.addEventListener('click', () => {
       if (currentIndex > 0) {
         currentIndex--;
-        showViewer(currentIndex);
+        showViewer(currentIndex, isTestViewer);
+      }
+    });
+
+    nextButton.addEventListener('click', () => {
+      if (currentIndex < (isTestViewer ? testViewerUrls : viewerUrls).length - 1) {
+        currentIndex++;
+        showViewer(currentIndex, isTestViewer);
       }
     });
   </script>
