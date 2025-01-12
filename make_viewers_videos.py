@@ -30,7 +30,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
          justify-content: center; align-items: center; width: auto; height: auto;">
     </div>
     
-    <video id="video" loop muted crossorigin="anonymous" playsinline style="display:none">
+    <video id="video" muted crossorigin="anonymous" playsinline style="display:none">
       <source src="{commented_path}" type="video/webm">
     </video>
     
