@@ -90,7 +90,7 @@ HTML_HEAD = """<!DOCTYPE html>
     Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
     The videos will play twice and then pause on a frame.<br>
     Observe the reflections on surfaces like windows or shiny furniture.<br>
-    Focus on which video shows reflections that feel more <strong>realistic</strong> and have a <strong>plausible 3D depth</strong>.<br>
+    Your task is to determine in which video <strong> the reflections have a more realistic depth </strong>.
     Start with the test viewer, to get familiar with the task and make sure you understand it.<br>
     Thank you for your input!
   </p>
