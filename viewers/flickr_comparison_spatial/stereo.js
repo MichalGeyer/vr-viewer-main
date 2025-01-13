@@ -20,8 +20,8 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x101010);
 
-  // Create the camera (with forced aspect ratio = 2)
-  camera = new THREE.PerspectiveCamera(70, 2.0, 1, 2000);
+  // Create the camera with forced aspect ratio = 1.0
+  camera = new THREE.PerspectiveCamera(70, 1.0, 1, 2000);
   // Left eye → layer 1; right eye → layer 2
   camera.layers.enable(1);
   camera.layers.enable(2);
@@ -56,7 +56,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // Force a 2:1 viewport to match the SBS image
+  // Force a 1:1 viewport
   setViewportSize();
   window.addEventListener('resize', onWindowResize);
 
@@ -78,19 +78,23 @@ function onWindowResize() {
 }
 
 function setViewportSize() {
-  // We want width : height = 2 : 1
+  // We want width : height = 1 : 1
   const maxW = window.innerWidth;
   const maxH = window.innerHeight;
 
+  // Determine the largest square that fits in the browser window
   let w = maxW;
-  let h = w / 2;
+  let h = w;
   if (h > maxH) {
     h = maxH;
-    w = h * 2;
+    w = h;
   }
 
+  // Apply to renderer
   renderer.setSize(w, h);
-  camera.aspect = 2;
+
+  // Update camera aspect
+  camera.aspect = 1;
   camera.updateProjectionMatrix();
 }
 
