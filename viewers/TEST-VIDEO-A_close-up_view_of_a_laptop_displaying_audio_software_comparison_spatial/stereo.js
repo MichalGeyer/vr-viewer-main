@@ -32,8 +32,8 @@ function init() {
     video.play().catch((error) => {
       console.error('Error playing video:', error);
     });
-  }, { once: true });
-
+  }, { once: true }); // Ensure it only fires once
+  
   // Event listener for when the video ends
   video.addEventListener('ended', () => {
     playCount++;
@@ -47,18 +47,20 @@ function init() {
   
   // Function to pause the video at a specific frame
   function pauseVideoAtFrame(frame) {
-    const targetTime = frame / fps;
-    video.currentTime = targetTime;
+    const targetTime = frame / fps; // Calculate the time for the frame
+    video.currentTime = targetTime; // Seek to the target frame time
     console.log(`Seeking to ${targetTime}s (frame ${frame})`);
-
+  
+    // Ensure the video pauses after seeking
     const onSeeked = () => {
-      video.pause();
+      video.pause(); // Pause the video
       console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
-      video.removeEventListener('seeked', onSeeked);
+      video.removeEventListener('seeked', onSeeked); // Remove the seeked listener
     };
   
-    video.addEventListener('seeked', onSeeked);
+    video.addEventListener('seeked', onSeeked); // Listen for the seek to complete
   }
+  
 
   // Create a video texture
   const texture = new THREE.VideoTexture(video);
@@ -68,8 +70,8 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x101010);
 
-  // --- Camera (force aspect = 1.0) ---
-  camera = new THREE.PerspectiveCamera(70, 1.0, 1, 2000);
+  // --- Camera (force aspect = 2) ---
+  camera = new THREE.PerspectiveCamera(70, 2.0, 1, 2000);
   camera.layers.enable(1); // left-eye layer
 
   // Left-eye quad
@@ -106,7 +108,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // Calculate a 1:1 viewport that fits in the current window
+  // Calculate a 2:1 viewport that fits in current window
   setViewportSize();
 
   renderer.xr.enabled = true;
@@ -124,23 +126,23 @@ function init() {
 }
 
 function pauseVideoAtFrame(frame) {
-  const targetTime = frame / fps;
-  video.currentTime = targetTime;
+  const targetTime = frame / fps; // Calculate time for the frame
+  video.currentTime = targetTime; // Seek to the target frame time
   console.log(`Seeking to ${targetTime}s (frame ${frame})`);
 
   const onSeeked = () => {
-    video.pause();
+    video.pause(); // Ensure the video pauses after seeking
     console.log(`Paused video at frame ${frame} (time: ${video.currentTime}s)`);
-    video.removeEventListener('seeked', onSeeked);
-    video.removeEventListener('ended', onEnded);
+    video.removeEventListener('seeked', onSeeked); // Remove this listener to prevent repeated triggers
+    video.removeEventListener('ended', onEnded); // Remove the ended listener to stop playback completely
   };
 
   const onEnded = () => {
     console.log("Playback has already been stopped.");
   };
 
-  video.addEventListener('seeked', onSeeked);
-  video.addEventListener('ended', onEnded);
+  video.addEventListener('seeked', onSeeked); // Listen for the seek to complete
+  video.addEventListener('ended', onEnded); // Safeguard to prevent replay after pausing
 }
 
 function onWindowResize() {
@@ -148,17 +150,25 @@ function onWindowResize() {
 }
 
 function setViewportSize() {
-  // We want width : height = 1 : 1,
-  // but we must also ensure it fits within the current window.
+  // We want width : height = 2 : 1,
+  // but we must also ensure it fits in the current window.
+
   const maxW = window.innerWidth;
   const maxH = window.innerHeight;
 
-  // We'll take the largest square that fits.
-  let size = Math.min(maxW, maxH);
+  // First assume we take the full width, then compute height = width/2
+  let w = maxW;
+  let h = w / 2;
+
+  // If that height is too tall for the window, scale down
+  if (h > maxH) {
+    h = maxH;
+    w = h * 2;
+  }
 
   // Now set renderer and camera
-  renderer.setSize(size, size);
-  camera.aspect = 1;  // Force 1:1
+  renderer.setSize(w, h);
+  camera.aspect = 2; // width / height is forced = 2
   camera.updateProjectionMatrix();
 }
 
