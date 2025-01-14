@@ -2,7 +2,7 @@ import os
 import shutil
 
 STEREO_JS_SOURCE='example/stereo.js'
-STEREO_JS_SOURCE_AR2 = 'example_ar2/stereo.js'
+STEREO_JS_SOURCE_AR2 = 'example_ar_2_195/stereo.js'
 SAVE_PATH = 'viewers'
 PAIRS_USER_STUDY_PATH = "https://michalgeyer.github.io/vr-viewer-files-webm/pairs-user-study-webm"  # https path used inside <source>
 VIDEOS_LOCAL_PATH = '../vr-viewer-files-webm/pairs-user-study-webm/'
@@ -39,24 +39,27 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 #       <source src="{actual_path}" type="video/mp4">
-def create_html(prompt_name: str, result: str) -> str:
+def create_html(prompt_name: str, leftright: str, result: str) -> str:
     """
     Generate the HTML content for a given prompt and result.
     E.g. result can be 'ours' or 'depth_c'.
     """
-    commented_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.webm"
-    actual_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.mp4"
+    commented_path = f"{PAIRS_USER_STUDY_PATH}/{leftright}/{prompt_name}/{result}.webm"
+    # actual_path = f"{PAIRS_USER_STUDY_PATH}/{prompt_name}/{result}.mp4"
     
     return HTML_TEMPLATE.format(
         commented_path=commented_path,
-        actual_path=actual_path
     )
 
 def main():
     VIEWER_TYPE = 'spatial_compare' # | 'temporal_compare' | 'spatial_compare' | 'seperate'
     assert VIEWER_TYPE in ['seperate', 'temporal_compare', 'spatial_compare'], "Invalid viewer type"
     # Go through each item in the video folder
-    for prompt in os.listdir(VIDEOS_LOCAL_PATH):
+    local_pairs_ours_left = os.path.join(VIDEOS_LOCAL_PATH, 'left')
+    local_pairs_ours_right = os.path.join(VIDEOS_LOCAL_PATH, 'right')
+    prompts_leftright = {prompt: 'left' for prompt in os.listdir(local_pairs_ours_left)}
+    prompts_leftright.update({prompt: 'right' for prompt in os.listdir(local_pairs_ours_right)})
+    for prompt, leftright in prompts_leftright.items():
         # if not 'kitchen' in prompt:
         #     continue
         print(prompt)
@@ -69,8 +72,8 @@ def main():
             os.makedirs(warp_inpaint_folder, exist_ok=True)
             
             # Generate the HTML for each result
-            ours_html = create_html(prompt, "ours")
-            warp_inpaint_html = create_html(prompt, "warp_inpaint")
+            ours_html = create_html(prompt, leftright, "ours")
+            warp_inpaint_html = create_html(prompt, leftright, "warp_inpaint")
             
             # Write index.html into each subfolder
             with open(os.path.join(ours_folder, "index.html"), "w", encoding="utf-8") as f:
@@ -92,7 +95,7 @@ def main():
             os.makedirs(prompt_folder, exist_ok=True)
             
             # Generate the HTML for each result
-            html = create_html(prompt, filename)
+            html = create_html(prompt, leftright, filename)
             
             # Write index.html into each subfolder
             with open(os.path.join(prompt_folder, "index.html"), "w", encoding="utf-8") as f:

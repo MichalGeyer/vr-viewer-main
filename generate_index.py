@@ -89,8 +89,8 @@ HTML_HEAD = """<!DOCTYPE html>
   <p class="instructions">
     Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
     The videos will play twice and then pause on a frame.<br>
-    Observe the reflections on surfaces like windows or shiny furniture.<br>
-    Your task is to determine in which video <strong> the reflections have a more realistic depth </strong>.
+    Your task is to determine in which video <strong> has a more realistic 3D effect</strong>.
+    Pay attention to the 3D effect of reflections and of objects behind transperent surfaces.<br> 
     Start with the test viewer, to get familiar with the task and make sure you understand it.<br>
     Thank you for your input!
   </p>
@@ -108,15 +108,34 @@ HTML_HEAD = """<!DOCTYPE html>
   </div>
 
   <script>
+    // The main viewer array:
     const viewerUrls = [
 """
 
-HTML_FOOT = """    ];
+HTML_MIDDLE = """    ];
 
+    // A simple utility function to shuffle any given array in place.
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Shuffle the main viewer URLs on page load
+    shuffleArray(viewerUrls);
+
+    // caption_to_id object generated below
+    const caption_to_id = {
+"""
+
+HTML_MIDDLE2 = """    };
+
+    // Test viewer URLs (not shuffled by default)
     const testViewerUrls = [
-    "viewers/TEST-VIDEO-A_bakery_display_case_showcasing_rows_of_freshly_baked_pastries_comparison_spatial/index.html",
-    "viewers/TEST-VIDEO-A_close-up_view_of_a_laptop_displaying_audio_software_comparison_spatial/index.html",
-    "viewers/TEST-VIDEO-An_underwater_view_featuring_rocks_and_clear_blue_water_comparison_spatial/index.html",
+      "viewers/flickr_comparison_spatial/index.html",
+      "viewers/TEST-VIDEO-A_close-up_view_of_a_laptop_displaying_audio_software_comparison_spatial/index.html"
     ];
 
     let currentIndex = 0;
@@ -131,11 +150,25 @@ HTML_FOOT = """    ];
     const backButton = document.getElementById('backButton');
     const videoIdTitle = document.getElementById('videoIdTitle');
 
+    // Show the viewer iframe at the specified index
     function showViewer(index, isTest = false) {
       const urls = isTest ? testViewerUrls : viewerUrls;
       viewerFrame.src = urls[index];
-      const videoId = urls[index].split('/').slice(-2, -1)[0].split('comparison_spatial')[0].replace(/_/g, ' ');
-      videoIdTitle.textContent = `VIDEO ID: ${videoId}`;
+      // Pull the last subfolder name from the path (e.g. "A_glass_door..." from ".../A_glass_door.../index.html")
+      const folderName = urls[index].split('/').slice(-2, -1)[0];
+      // Use that folderName to get the ID from caption_to_id
+      const videoId = caption_to_id[folderName] !== undefined ? caption_to_id[folderName] : folderName;
+      videoIdTitle.textContent = 'VIDEO ID: ' + videoId;
+    }
+
+    // Show the main instructions/home screen
+    function showMainScreen() {
+      viewerContainer.style.display = 'none';
+      viewerFrame.src = '';
+      document.querySelector('h1').style.display = 'block';
+      document.querySelector('.instructions').style.display = 'block';
+      startButton.style.display = 'block';
+      testViewerButton.style.display = 'block';
     }
 
     startButton.addEventListener('click', () => {
@@ -161,12 +194,7 @@ HTML_FOOT = """    ];
     });
 
     backButton.addEventListener('click', () => {
-      viewerContainer.style.display = 'none';
-      viewerFrame.src = '';
-      document.querySelector('h1').style.display = 'block';
-      document.querySelector('.instructions').style.display = 'block';
-      startButton.style.display = 'block';
-      testViewerButton.style.display = 'block';
+      showMainScreen();
     });
 
     prevButton.addEventListener('click', () => {
@@ -177,7 +205,8 @@ HTML_FOOT = """    ];
     });
 
     nextButton.addEventListener('click', () => {
-      if (currentIndex < (isTestViewer ? testViewerUrls : viewerUrls).length - 1) {
+      const urls = isTestViewer ? testViewerUrls : viewerUrls;
+      if (currentIndex < urls.length - 1) {
         currentIndex++;
         showViewer(currentIndex, isTestViewer);
       }
@@ -204,27 +233,40 @@ def main():
     # Gather all subfolders in ./viewers
     viewer_folders = []
     for item in os.listdir(VIEWERS_DIR):
+        # Skip certain items you don't want in the list
         if item.endswith('depthc') or '.DS' in item or item == 'images':
             continue
         full_path = os.path.join(VIEWERS_DIR, item)
         if os.path.isdir(full_path):
             viewer_folders.append(item)
 
-    # Generate viewer URLs
-    viewer_urls = ""
-    for folder in sorted(viewer_folders):
-        prompt, label = parse_folder_name(folder)
-        index_path = os.path.join("viewers", folder, "index.html").replace("\\", "/")
-        viewer_urls += f'      "{index_path}",\n'
+    # Sort viewer folders so insertion into both arrays is consistent
+    viewer_folders_sorted = sorted(viewer_folders)
 
-    # Combine HTML parts
-    final_html = HTML_HEAD + viewer_urls.rstrip(",\n") + "\n" + HTML_FOOT
+    # 1) Generate lines for viewerUrls
+    viewer_urls_lines = []
+    for folder in viewer_folders_sorted:
+        index_path = os.path.join("viewers", folder, "index.html").replace("\\", "/")
+        viewer_urls_lines.append(f'      "{index_path}",')
+
+    # 2) Generate the caption_to_id object
+    caption_to_id_lines = []
+    for i, folder in enumerate(viewer_folders_sorted):
+        caption_to_id_lines.append(f'      "{folder}": {i},')
+
+    # Combine final HTML
+    final_html = []
+    final_html.append(HTML_HEAD)                          # Up to "const viewerUrls = ["
+    final_html.append("\n".join(viewer_urls_lines))       # The <script> array for viewerUrls
+    final_html.append(HTML_MIDDLE)                        # Start of shuffle + caption_to_id
+    final_html.append("\n".join(caption_to_id_lines))     # fill in the caption_to_id object
+    final_html.append(HTML_MIDDLE2)                       # The rest of the script
 
     # Write out the HTML file
     with open(OUTPUT_INDEX, "w", encoding="utf-8") as f:
-        f.write(final_html)
+        f.write("".join(final_html))
 
-    print(f"Generated {OUTPUT_INDEX} with {len(viewer_folders)} entries.")
+    print(f"Generated {OUTPUT_INDEX} with {len(viewer_folders_sorted)} entries.")
 
 if __name__ == "__main__":
     main()
