@@ -367,11 +367,24 @@
     submitButton.addEventListener('click', () => {
 
       const options = {
-        method: 'POST',
-        headers: {'X-MAN-API': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJnVlBqc1ZjYVF2TWFXYk9heVJoUlpxMHdZOEMzIiwiaXNzIjoiaHR0cHM6Ly9qc29uc2lsby5jb20iLCJleHAiOjE3Mzk0NDM5Mzl9.W-PhfQGSh1I1nWbn6Sh-s5x5WxPCX4gZEiYxd5T5DAg', 'Content-Type': 'application/json'},
-        body: `{"file_name":"${new Date().toLocaleString()}","file_data":${JSON.stringify(state)},"region_name":"api","is_public":true}`
-      };
-
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+        };
+        fetch('https://jsonblob.com/api/jsonBlob/1328693316459618304', options)
+        .then(response => response.json())
+        .then(response => {
+            let content = response;
+            const updateOptions = {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(content)
+                };
+            fetch('https://jsonblob.com/api/jsonBlob/1328693316459618304', updateOptions)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+            });
+        });
       fetch('https://api.jsonsilo.com/api/v1/manage', options)
         .then(response => response.json())
         .then(response => console.log(response))
