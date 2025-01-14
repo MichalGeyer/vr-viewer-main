@@ -370,7 +370,7 @@
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
         };
-        fetch('https://jsonblob.com/api/jsonBlob/1328693316459618304', options)
+        fetch('https://jsonblob.com/api/jsonBlob/1328704348758401024', options)
         .then(response => response.json())
         .then(response => {
             let content = response;
@@ -380,7 +380,7 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(content)
                 };
-            fetch('https://jsonblob.com/api/jsonBlob/1328693316459618304', updateOptions)
+            fetch('https://jsonblob.com/api/jsonBlob/1328704348758401024', updateOptions)
             .then(response => response.json())
             .then(response => {
                 console.log(response);
