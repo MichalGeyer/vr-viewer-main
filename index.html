@@ -374,6 +374,7 @@
         .then(response => response.json())
         .then(response => {
             let content = response;
+            content.push(state);
             const updateOptions = {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
@@ -383,14 +384,10 @@
             .then(response => response.json())
             .then(response => {
                 console.log(response);
+                // state = {};
             });
         });
-      fetch('https://api.jsonsilo.com/api/v1/manage', options)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
 
-      state = {};
       viewerContainer.style.display = 'none';
       viewerFrame.src = '';
       document.querySelector('h1').style.display = 'block';
