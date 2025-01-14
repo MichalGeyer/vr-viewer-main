@@ -90,7 +90,7 @@ HTML_HEAD = """<!DOCTYPE html>
     Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
     The videos will play twice and then pause on a frame.<br>
     Your task is to determine in which video <strong> has a more realistic 3D effect</strong>.
-    Pay attention to the 3D effect of reflections and of objects behind transperent surfaces.<br> 
+    Pay attention to the 3D effect of <strong> reflections </strong> and of objects behind <strong> transperent surfaces </strong>.<br> 
     Start with the test viewer, to get familiar with the task and make sure you understand it.<br>
     Thank you for your input!
   </p>
@@ -125,6 +125,9 @@ HTML_MIDDLE = """    ];
 
     // Shuffle the main viewer URLs on page load
     shuffleArray(viewerUrls);
+    // Add hidden test URLs to the viewerUrls array at the 5th position
+    const hidden_test_urls = ["test_viewers/TEST-VIDEO-A_lion_standing_near_the_glass,_gazing_outside_the_exhibit_comparison_spatial/index.html"];
+    viewerUrls.splice(4, 0, ...hidden_test_urls);
 
     // caption_to_id object generated below
     const caption_to_id = {
@@ -250,7 +253,7 @@ def main():
         viewer_urls_lines.append(f'      "{index_path}",')
 
     # 2) Generate the caption_to_id object
-    caption_to_id_lines = []
+    caption_to_id_lines = ['      "TEST-VIDEO-A_lion_standing_near_the_glass,_gazing_outside_the_exhibit_comparison_spatial": -1,']
     for i, folder in enumerate(viewer_folders_sorted):
         caption_to_id_lines.append(f'      "{folder}": {i},')
 

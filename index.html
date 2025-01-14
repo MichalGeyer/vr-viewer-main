@@ -85,7 +85,7 @@
     Click <strong>Enter VR</strong> for each video to view two videos side by side.<br>
     The videos will play twice and then pause on a frame.<br>
     Your task is to determine in which video <strong> has a more realistic 3D effect</strong>.
-    Pay attention to the 3D effect of reflections and of objects behind transperent surfaces.<br> 
+    Pay attention to the 3D effect of <strong> reflections </strong> and of objects behind <strong> transperent surfaces </strong>.<br> 
     Start with the test viewer, to get familiar with the task and make sure you understand it.<br>
     Thank you for your input!
   </p>
@@ -147,9 +147,13 @@
 
     // Shuffle the main viewer URLs on page load
     shuffleArray(viewerUrls);
+    // Add hidden test URLs to the viewerUrls array at the 5th position
+    const hidden_test_urls = ["test_viewers/TEST-VIDEO-A_lion_standing_near_the_glass,_gazing_outside_the_exhibit_comparison_spatial/index.html"];
+    viewerUrls.splice(4, 0, ...hidden_test_urls);
 
     // caption_to_id object generated below
     const caption_to_id = {
+      "TEST-VIDEO-A_lion_standing_near_the_glass,_gazing_outside_the_exhibit_comparison_spatial": -1,
       "A_glass_door_with_a_sign_reading_'Closed'_in_Hebrew,_showing_reflections_of_the_street_comparison_spatial": 0,
       "A_minimalist_dining_area_with_modern_furniture_and_decor_comparison_spatial": 1,
       "A_modern_kitchen_with_cream_cabinetry,_stainless_steel_appliances,_and_a_central_island_comparison_spatial": 2,
