@@ -4,7 +4,7 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 let camera, scene, renderer, mesh1, mesh2, video;
 let playCount = 0; // Track how many times the video has played
 const maxPlays = 3; // Set how many times the video should replay
-const pauseFrame = 78; // Frame to pause on
+const pauseFrame = 30; // Frame to pause on
 const fps = 16; // Frame rate of the video
 
 init();
