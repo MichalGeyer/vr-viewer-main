@@ -134,8 +134,8 @@ HTML_MIDDLE2 = """    };
 
     // Test viewer URLs (not shuffled by default)
     const testViewerUrls = [
-      "viewers/flickr_comparison_spatial/index.html",
-      "viewers/TEST-VIDEO-A_close-up_view_of_a_laptop_displaying_audio_software_comparison_spatial/index.html"
+      "viewers_test/flickr_comparison_spatial/index.html",
+      "viewers_test/TEST-VIDEO-A_close-up_view_of_a_laptop_displaying_audio_software_comparison_spatial/index.html"
     ];
 
     let currentIndex = 0;
